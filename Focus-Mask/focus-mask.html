@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus mask</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #333;
+    }
+
+    .content {
+      position: relative;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      color: #fff;
+    }
+
+    .content img {
+      max-width: 100%;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+
+    /* Mask overlay to hide content */
+    .mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* Makes it non-interactable */
+      z-index: 10;
+    }
+
+    /* Mask hole to reveal content */
+    .mask-clip {
+      position: absolute;
+      width: 100vw;
+      height: 200px;
+      background: transparent;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.80); /* Simulate mask with a transparent hole */
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <h1>A Journey Through the Woods</h1>
+    <p>
+      It was a crisp autumn morning when we embarked on our journey. The forest was alive with the golden hues of fall, and the gentle rustle of leaves underfoot was the only sound breaking the serene silence.
+    </p>
+    <img src="https://via.placeholder.com/800x400?text=Golden+Forest" alt="Golden Forest">
+    <p>
+      As we ventured deeper, the sunlight filtered through the canopy, creating a magical interplay of light and shadow. The path twisted and turned, each bend revealing something new — a family of deer grazing, a sparkling stream, or a cluster of mushrooms.
+    </p>
+    <img src="https://via.placeholder.com/800x400?text=Woodland+Stream" alt="Woodland Stream">
+    <p>
+      By midday, we reached a clearing. Here, the forest opened up, and a breathtaking view of the distant mountains greeted us. It was a reminder of the vastness of nature and our small, humble place within it.
+    </p>
+    <img src="https://via.placeholder.com/800x400?text=Distant+Mountains" alt="Distant Mountains">
+  </div>
+
+  <!-- Mask element -->
+  <div class="mask">
+    <div class="mask-clip" id="mask-clip"></div>
+  </div>
+
+  <script>
+$(document).on('mousemove', function(event) {
+  const maskClip = $('#mask-clip');
+  const y = event.clientY - 100; // Center the circle vertically
+  maskClip.css({
+    left: `0px`,
+    top: `${y}px`
+  });
+});
+
+  </script>
+</body>
+</html>
