@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<style>
+    *{padding: 0;margin:0;}
+#tooltip{
+width:150px;
+background:red;
+position:fixed;
+top:0;
+left:0;
+display: none;
+}
+.box{
+    width: 100vw;
+    height: 100vh;
+    border:1px solid #ddd;
+        cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div id="tooltip">Tooltip---
+Click anywhere in this document to get the x and y coordinates of the mouse pointer, relative to the window.</div>  
+<div class="box"  onmousemove="showCoords(event)">
+<p>Click anywhere in this document to get the x and y coordinates of the mouse pointer, relative to the window.</p>
+<p id="demo">Coordinates:</p>
+</div>
+
+<script>
+function showCoords(event) {
+  let x = event.clientX;
+  let y = event.clientY;
+  let vpwidth=window.innerWidth-10;
+  let vpheight=window.innerHeight-10;
+  let ttpwidth=document.getElementById("tooltip").offsetWidth;
+  let ttpHeight=document.getElementById("tooltip").offsetHeight;
+  let text = "X coords: " + x + ", Y coords: " + y;
+  document.getElementById("demo").innerHTML = "vpWidth:"+ttpwidth+" vpHeight"+ttpHeight+" ::::: X:"+x+" Y"+y;
+  $("#tooltip").css("display","block");
+  $("#tooltip").css("top",y+10+"px");
+  $("#tooltip").css("left",x+10+"px");
+  if(vpwidth<x+ttpwidth){
+    $("#tooltip").css("left",x-ttpwidth+"px");
+  }
+  if(vpheight<y+ttpHeight){
+    $("#tooltip").css("top",y-ttpHeight+"px");
+  }
+}
+</script>
+
+</body>
+</html>
