@@ -1,71 +1,80 @@
 <!DOCTYPE html>
 <html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-function yourfunction(ele){
-			if(ele.checked){
-				//checked
-				$(ele).parent().find("span").html("Active")
-			}
-			else{
-				$(ele).parent().find("span").html("Inactive")
 
-			}
-		}
-</script>
-<style>
-/*on off switch*/
-.and_Or_Switch{
-    position: relative;
-    display: inline-flex;
-    transition: .2s ease-in;
-  }
-  .and_Or_Switch label span {
-    margin: 0 0px 0 10px;
-  }
-  .and_Or_Switch i {
-background: #fff;
-    height: 11px;
-    width: 11px;
-    display: block;
-    position: absolute;
-    left: 3px;
-    top: 3px;
-    border-radius: 50%;
-    pointer-events: none;
-    box-shadow: 0 0 4px #0000006b;
-    transition: .2s ease-in;
-}
-.and_Or_Switch label {
-    border: 1px solid #e3e3e3;
-    border-radius: 10px;
-    height: 16px;
-    width: 28px;
-    background: #ededed;
-    margin: 0;
-}
-  .and_Or_Switch input{
-    display: none;
-  }
-  .and_Or_Switch input:checked ~ i {
-    left: 15px;
-}
-.and_Or_Switch input:checked ~ label {
-    background: #6fb66a;
-}
-.and_Or_Switch>span {
-    display: inline;
-    margin-left: 7px;
-    opacity: 1;
-}
-</style>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    function yourfunction(ele) {
+      if (ele.checked) {
+        //checked
+        $(ele).parent().find("span").html("Active")
+      }
+      else {
+        $(ele).parent().find("span").html("Inactive")
+
+      }
+    }
+  </script>
+  <style>
+    /*on off switch*/
+    .and_Or_Switch {
+      position: relative;
+      display: inline-flex;
+      transition: .2s ease-in;
+    }
+
+    .and_Or_Switch label span {
+      margin: 0 0px 0 10px;
+    }
+
+    .and_Or_Switch i {
+      background: #fff;
+      height: 11px;
+      width: 11px;
+      display: block;
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      border-radius: 50%;
+      pointer-events: none;
+      box-shadow: 0 0 4px #0000006b;
+      transition: .2s ease-in;
+    }
+
+    .and_Or_Switch label {
+      border: 1px solid #e3e3e3;
+      border-radius: 10px;
+      height: 16px;
+      width: 28px;
+      background: #ededed;
+      margin: 0;
+    }
+
+    .and_Or_Switch input {
+      display: none;
+    }
+
+    .and_Or_Switch input:checked~i {
+      left: 15px;
+    }
+
+    .and_Or_Switch input:checked~label {
+      background: #6fb66a;
+    }
+
+    .and_Or_Switch>span {
+      display: inline;
+      margin-left: 7px;
+      opacity: 1;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="and_Or_Switch"><input checked="" onclick="yourfunction(this)" id="and_Or_Switch15"
-                                            name="and_Or_Switch15" type="checkbox"><i></i><label
-                                            for="and_Or_Switch15"></label><span>Active</span></div>
+  <div class="and_Or_Switch"><input checked="" onclick="yourfunction(this)" id="and_Or_Switch15" name="and_Or_Switch15"
+      type="checkbox"><i></i><label for="and_Or_Switch15"></label><span>Active</span></div>
 
 </body>
+
 </html>
