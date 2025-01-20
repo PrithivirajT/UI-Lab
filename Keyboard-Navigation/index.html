@@ -23,6 +23,15 @@ display: inline-block;
 .container > div:focus{
   outline-color:orange;
 }
+#AddResourceMenuChild {
+    display: none;
+}
+#AddResourceMenuTab:focus-visible + #AddResourceMenuChild, #AddResourceMenuChild:has(a:focus){
+    display: block;
+}
+*:focus{
+  outline:2px solid red;
+}       
 </style>
 </head>
 <body>
@@ -49,59 +58,68 @@ display: inline-block;
 
 </body>
 <script>
-window.addEventListener('keydown', KeyPress);
-function KeyPress(event) {
-	const focusableElements = document.querySelectorAll('button, input, textarea, a, select, li, [tabindex]');
-	const activeElement = document.activeElement;
-	const currentIndex = Array.prototype.indexOf.call(focusableElements, activeElement);
-	const currentRect = activeElement.getBoundingClientRect();
-    const startPos=currentRect.top;
-    const endPos=currentRect.left+currentRect.width;
-    const topEle="";
-    const bottomEle="";
-
-	switch (event.key) {
-		case "ArrowUp":
-            targetUp();
-			break;
-		case "ArrowDown":
-			targetDown();
-			break;
-		case "ArrowLeft":
-			newIndex = currentIndex - 1;
-			break;
-		case "ArrowRight":
-			newIndex = currentIndex + 1;
-			break;
-		default:
-			return;
-	}
-    function targetDown(){
-        for (let i = 0; i < focusableElements.length; i++) {
-        const element = focusableElements[i];
-        const rect = element.getBoundingClientRect();
-        if (startPos < rect.top) {
-            if (currentRect.left <= rect.left && endPos >= rect.left) {
-            newIndex=i;
-            break; // Exit the loop
-            }
-        }
-        }
-    }
-    function targetUp(){
-        for (let i = 0; i < focusableElements.length; i++) {
-        const element = focusableElements[i];
-        const rect = element.getBoundingClientRect();
-        if (startPos > rect.top) {
-            if (currentRect.left <= rect.left && endPos >= rect.left) {
-            newIndex=i;
-            }
-        }
-        }
-    }
-	if (newIndex >= 0 && newIndex < focusableElements.length) {
-		focusableElements[newIndex].focus();
-	}
-}
-</script>
+  window.addEventListener('keydown', handleKeyPress);
+  
+  function handleKeyPress(event) {
+      const focusableElements = document.querySelectorAll('button, input, textarea, a, select, li, [tabindex]');
+      const activeElement = document.activeElement;
+      const currentIndex = Array.prototype.indexOf.call(focusableElements, activeElement);
+      const currentRect = activeElement.getBoundingClientRect();
+  
+      let newIndex = currentIndex;
+  
+      switch (event.key) {
+          case "ArrowUp":
+              newIndex = findClosestElement(focusableElements, currentRect, 'up');
+              break;
+          case "ArrowDown":
+              newIndex = findClosestElement(focusableElements, currentRect, 'down');
+              break;
+          case "ArrowLeft":
+              newIndex = currentIndex - 1;
+              break;
+          case "ArrowRight":
+              newIndex = currentIndex + 1;
+              break;
+          default:
+              return;
+      }
+  
+      if (newIndex >= 0 && newIndex < focusableElements.length) {
+          focusableElements[newIndex].focus();
+      }
+  }
+  
+  function findClosestElement(elements, currentRect, direction) {
+      let closestIndex = -1;
+      let closestDistance = Infinity;
+  
+      elements.forEach((element, index) => {
+          const rect = element.getBoundingClientRect();
+          let distance;
+  
+          if (direction === 'up' && rect.bottom <= currentRect.top) {
+              distance = currentRect.top - rect.bottom;
+              if (isAligned(rect, currentRect) && distance < closestDistance) {
+                  closestDistance = distance;
+                  closestIndex = index;
+              }
+          }
+  
+          if (direction === 'down' && rect.top >= currentRect.bottom) {
+              distance = rect.top - currentRect.bottom;
+              if (isAligned(rect, currentRect) && distance < closestDistance) {
+                  closestDistance = distance;
+                  closestIndex = index;
+              }
+          }
+      });
+  
+      return closestIndex;
+  }
+  
+  function isAligned(rect1, rect2) {
+      return rect1.left < rect2.right && rect1.right > rect2.left;
+  }
+  </script>
 </html>
