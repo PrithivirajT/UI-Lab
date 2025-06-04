@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    function yourfunction(ele) {
+      if (ele.checked) {
+        //checked
+        $(ele).parent().find("span").html("checked")
+      }
+      else {
+        $(ele).parent().find("span").html("unchecked")
+
+      }
+    }
+  </script>
+  <style>
+   .check {
+  display: none;
+}
+
+.collapse-button {
+  position: relative;
+  display: inline-block;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.collapse-button div {
+  width: 25px;
+  height: 3px;
+  background-color: darkgray;
+  border-radius: 3px;
+  position: absolute;
+  transition: 0.4s;
+}
+
+.line1 {
+  top: 0;
+}
+
+.line2 {
+  top: calc(40%);
+}
+
+.line3 {
+  top: calc(80%);
+}
+
+.collapse-button div {
+  width: 54.2857143%;
+}
+
+.collapse-button .line1 {
+  border-radius: 7px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.collapse-button .line3 {
+  border-radius: 7px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.check:checked ~ .collapse-button .line1 {
+  transform: translate(3px, 5px) rotate(-35deg);
+  border-radius: 7px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.check:checked ~ .collapse-button .line3 {
+  transform: translate(3px, -5px) rotate(35deg);
+  border-radius: 7px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.check:checked ~ .collapse-button .line2 {
+  margin-left: 12px;
+}
+
+  </style>
+</head>
+
+<body>
+  <input type="checkbox" class="check" id="check" />
+  <label for="check" class="collapse-button">
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+  </label>
+  
+</body>
+
+</html>

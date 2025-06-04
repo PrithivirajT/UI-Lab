@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Drag and Drop</title>  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <style>
+            *{padding: 0;margin: 0;box-sizing: border-box;}
+        div#summary-window {
+                width: 30%;
+                background: #fff;
+                height: 100vh;
+                padding: 10px;
+                border: 1px solid #ddd;
+                position: fixed;
+                top:0;
+                right:0;
+            }
+
+            pre#summaryTarget {
+                width: 100%;
+                white-space: break-spaces;
+            }
+
+            .custom-pop-up-title {
+                text-align: left;
+                background: #efefef;
+                padding: 10px 0;
+            }
+        </style>     
+    </head>      
+    <body>
+        <div id="summary-window" class="legacy-ssh-summary">
+            <div id="summary-box">
+                <div class="custom-pop-up-title"><strong>AI Summary</strong><span class="icon-close" onclick="closeSummary()"></span></div>
+                <div>
+                    <pre id="summaryTarget">Summary of User Commands:
+    
+                    The user connected to the host pmp-deb12 and successfully authenticated. After logging in, the user executed the following command:
+                    
+                    - ls
+                    
+                    This command was used to list the contents of the user's home directory.
+                    
+                    Categorized Operation:
+                    
+                    1. File System Navigation:
+                    - ls: Lists directory contents.
+                    
+                    No other commands were executed in the provided log. The output of the command was not processed as per instructions.</pre>
+                </div>
+            </div>
+            </div>
+    </body>
+    <script>
+    let drag = false;
+    let diff = {};
+    let newPos = {};
+    
+    const popupTitle = document.querySelector(".custom-pop-up-title");
+    const summaryWindow = document.getElementById("summary-window");
+
+    popupTitle.addEventListener("mousedown", function (e) {
+        drag = true;
+        popupTitle.style.cursor = "grabbing";
+        const rect = summaryWindow.getBoundingClientRect();
+        let currPos = {
+            x: rect.left + window.scrollX,
+            y: rect.top + window.scrollY
+        };
+
+        let mousePos = {
+            x: e.pageX,
+            y: e.pageY
+        };
+
+        diff = {
+            x: mousePos.x - currPos.x,
+            y: mousePos.y - currPos.y
+        };
+
+        function onMouseMove(e) {
+            if (drag) {
+                newPos = {
+                    x: e.pageX - diff.x,
+                    y: e.pageY - diff.y
+                };
+
+                summaryWindow.style.left = newPos.x + "px";
+                summaryWindow.style.top = newPos.y + "px";
+            }
+        }
+
+        function onMouseUp() {
+            drag = false;
+            popupTitle.style.cursor = "grab";
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
+        }
+
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+    });
+    </script>
+</html>

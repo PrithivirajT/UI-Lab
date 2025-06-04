@@ -71,9 +71,15 @@ display: inline-block;
       switch (event.key) {
           case "ArrowUp":
               newIndex = findClosestElement(focusableElements, currentRect, 'up');
+              if(newIndex === -1){
+                newIndex = currentIndex + 1;
+              }
               break;
           case "ArrowDown":
               newIndex = findClosestElement(focusableElements, currentRect, 'down');
+              if(newIndex === -1){
+                newIndex = currentIndex + 1;
+              }
               break;
           case "ArrowLeft":
               newIndex = currentIndex - 1;

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rearrange Grid Boxes</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 150px);
+      gap: 15px;
+    }
+
+    .box {
+      width: 150px;
+      height: 250px;
+      background-color: #87ceeb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 12px;
+      border: 2px solid #333;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .dragging {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Drag to Rearrange Boxes</h2>
+  <div class="grid" id="grid" role=>
+    <div id="box1" class="box" draggable="true" data-order="1">1</div>
+    <div id="box2" class="box" draggable="true" data-order="2">2</div>
+    <div id="box3" class="box" draggable="true" data-order="3">3</div>
+    <div id="box4" class="box" draggable="true" data-order="4">4</div>
+    <div id="box5" class="box" draggable="true" data-order="5">5</div>
+    <div id="box6" class="box" draggable="true" data-order="6">6</div>
+    <div id="box7" class="box" draggable="true" data-order="7">7</div>
+    <div id="box8" class="box" draggable="true" data-order="8">8</div>
+  </div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const boxes = grid.querySelectorAll('.box');
+    let swapSource=null;
+    let swapSourceId=null;
+    let swapText=null;
+    let swapHint=null;
+    let gridOrder=[];
+
+    function dragStart(event) {
+      swapSource=this;
+      swapSourceId=this.id;
+      this.classList.add('dragging');
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text1', this.textContent);
+    }
+
+    function dragEnd(event) {
+      this.classList.remove('dragging');
+    }
+
+    function dragOver(event) {
+      document.querySelectorAll('.box').forEach(box => box.style.boxShadow='none');
+      event.preventDefault();
+      swapHint=this;
+      swapHint.style.boxShadow='2px 2px 5px #333';
+    }
+
+    function dragDrop(event) {
+      event.dataTransfer.effectAllowed = 'update';
+      event.dataTransfer.setData('text2', this.innerHTML);
+      event.preventDefault();
+      swapText=this.innerHTML;
+      swapSource.innerHTML=swapText;
+      const data = event.dataTransfer.getData('text1');
+      this.innerHTML = data;
+      let tempId = this.id;
+      this.id= swapSource.id;
+      swapSource.id=tempId;
+      event.dataTransfer.clearData();
+      document.querySelectorAll('.box').forEach(box => box.style.boxShadow='none');
+      const boxIds = [...boxes].map(box => ({
+        id: box.id,
+        'data-order': box.dataset.order
+      }));
+      gridOrder = JSON.stringify(boxIds);
+      console.log('Current Order:', gridOrder);
+      sessionStorage.setItem('gridOrder', gridOrder);
+    }
+
+    boxes.forEach(box => {
+      box.addEventListener('dragstart', dragStart);
+      box.addEventListener('dragend', dragEnd);
+      box.addEventListener('dragover', dragOver);
+      box.addEventListener('drop', dragDrop);
+    });
+  </script>
+
+</body>
+</html>

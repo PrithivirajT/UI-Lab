@@ -6,17 +6,20 @@
         input[type="range"]{
         display:none;
         }
-        #change_font_spacing{
+        .level_button button{
             height: 70px;
             width:70px;
-        	background: olive;
+        	background: orange;
         	border:none;
             padding:10px;
             border-radius:5px;
             color:#fff;
             position: relative;
         }
-        #change_font_spacing:after{
+        #change_brightness button{
+            background: limegreen;
+        }
+        .level_button button:after{
             content:"";
             width: 50px;
             height: 4px;
@@ -27,29 +30,46 @@
             left:10px;
             display: none;
         }
-        body.font_spacing_0  #change_font_spacing:after{display: none;}
-        body.font_spacing_1  #change_font_spacing:after{ background:linear-gradient(90deg, #fff 33%, #00000028 0%); display: inline-block;}
-        body.font_spacing_2  #change_font_spacing:after{ background:linear-gradient(90deg, #fff 66%, #00000028 0%); display: inline-block;}
-        body.font_spacing_3  #change_font_spacing:after{ background:linear-gradient(90deg, #fff 100%, #00000028 0%); display: inline-block;}
+        body .level_button input.level0 ~ button:after{display: none;}
+        body .level_button input.level1 ~ button:after{ background:linear-gradient(90deg, #fff 33%, #00000028 0%); display: inline-block;}
+        body .level_button input.level2 ~ button:after{ background:linear-gradient(90deg, #fff 66%, #00000028 0%); display: inline-block;}
+        body .level_button input.level3 ~ button:after{ background:linear-gradient(90deg, #fff 100%, #00000028 0%); display: inline-block;}
+        body {
+            cursor: url("images/default-48.png"), auto;
+        }
+        button, a, select, input[type="checkbox"], input[type="radio"] {
+            cursor: url("images/pointer-48.png"), auto;
+        }
+        input[type="text"]{
+            cursor: url("images/text-48.png"), auto;
+        }
 
     </style>
 </head>
-<body class="font_spacing_0">
-    <input type="range" id="font_spacing" name="font_spacing" min="0" max="3" value="0">
-    <button id="change_font_spacing" class="level_button">0</button>
+<body>
+    <div class="level_button" id="change_font_spacing">
+        <input type="range" id="font_spacing" name="font_spacing" min="0" max="3" value="0">
+        <button onclick="accessibilitySetting2(this)">0</button>
+    </div>
+    <div class="level_button" id="change_brightness">
+        <input type="range" id="brightness" name="brightness" min="0" max="3" value="0">
+        <button onclick="accessibilitySetting2(this)">0</button>
+    </div>
+    <input type="text">
 <script>
-    const rangeInput = document.getElementById("font_spacing");
-    const button = document.getElementById("change_font_spacing");
-    function changeLevel() {
-        let currentLevel = parseInt(rangeInput.value, 0);
-        currentLevel = currentLevel >= 3 ? 0 : currentLevel + 1;
+    function accessibilitySetting2(AccessibilityOption) {
+        let rangeInput= AccessibilityOption.previousElementSibling;
+        let currentLevel = parseInt(rangeInput.value);
+        currentLevel = currentLevel >= rangeInput.max ? 0 : currentLevel + 1;
         rangeInput.value = currentLevel;
-        document.querySelector("body").classList.remove("font_spacing_1", "font_spacing_2", "font_spacing_3");
-        document.querySelector("body").classList.add(`font_spacing_${currentLevel}`);
-       button.innerHTML=currentLevel;
+        rangeInput.className=`level${currentLevel}`;
+        for (let i = 0; i <= rangeInput.max; i++) {
+            document.querySelector("body").classList.remove(`${rangeInput.name+i}`);
+        }
+        document.querySelector("body").classList.add(`${rangeInput.name+currentLevel}`);
+        AccessibilityOption.innerHTML=currentLevel;
        
     }
-    button.addEventListener("click", changeLevel);
 </script>
 
 </body>
